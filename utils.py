@@ -294,7 +294,7 @@ def get_accuity_response_for_error(FLOW_URL, eventUid, orgUnit_uid, program_uid,
         }
 
         response = requests.post(
-            FLOW_URL_updated,
+            FLOW_URL,
             headers=headers,
             json={
                 "eventUid": eventUid,
@@ -428,6 +428,8 @@ def get_accuity_response_for_error(FLOW_URL, eventUid, orgUnit_uid, program_uid,
 
 def get_tei_details(tei_get_url, session_get, ORGUNIT_UID,PROGRAM_UID, SEARCH_TEI_ATTRIBUTE_UID, SEARCH_VALUE ):
     
+    #UIN code search
+    #https://links.hispindia.org/ippf_uin/api/trackedEntityInstances.json?ou=iR2btIxN87s&ouMode=DESCENDANTS&program=GJbgrJjzCrr&filter=pkLdNynZWat:neq:%27%27
     #https://links.hispindia.org/ippf_uin/api/trackedEntityInstances.json?ou=iR2btIxN87s&ouMode=DESCENDANTS&program=GJbgrJjzCrr&filter=IzbdGgEgQ3T:eq:In%20Progress
     #tei_search_url = f"{tei_get_url}?ou={ORGUNIT_UID}&ouMode=DESCENDANTS&program={PROGRAM_UID}&filter=HKw3ToP2354:eq:{beneficiary_mapping_reg_id}"
 
@@ -489,7 +491,7 @@ def push_dataStore_tei_in_dhis2( session_get, namespace_url, tei_uid , combined_
     #logging.info(f"dataValueSet_payload : {json.dumps(dataValueSet_payload)}")
 
     dataStore_namespace_url = f"{namespace_url}{tei_uid}"
-    print(f"dataStore_namespace_url : {dataStore_namespace_url}")
+    #print(f"dataStore_namespace_url : {dataStore_namespace_url}")
     # Step 1: Get existing data
     response = session_get.get(dataStore_namespace_url)
 
@@ -529,7 +531,7 @@ def push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_ui
     #logging.info(f"dataValueSet_payload : {json.dumps(dataValueSet_payload)}")
 
     dataStore_namespace_url = f"{namespace_url}{tei_uid}"
-    print(f"dataStore_namespace_url : {dataStore_namespace_url}")
+    #print(f"dataStore_namespace_url : {dataStore_namespace_url}")
     # Step 1: Get existing data
     response = session_get.get(dataStore_namespace_url)
 
@@ -563,15 +565,217 @@ def push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_ui
     print(f"DataStore created/Updated successfully for event { event_uid}. {save_response.text}")
     logging.info(f"DataStore created/Updated successfully for event { event_uid }. {save_response.text}")
     
- 
+
+
+def get_dataStore_value(session_get, namespace_url, tei_uid, combined_key):
+
+    dataStore_namespace_url = f"{namespace_url}{tei_uid}"
+
+    response = session_get.get(dataStore_namespace_url)
+
+    if response.status_code != 200:
+        return False
+
+    data_list = response.json()
+
+    # If no records
+    if not isinstance(data_list, list) or len(data_list) == 0:
+        return False
+
+    for record in data_list:
+
+        # Check if this record matches your combined key
+        if record.get("id") == combined_key:
+
+            accuity_value = record.get(combined_key, "")
+
+            if accuity_value and accuity_value.strip() != "":
+                #print(f"Skipping Accuity push because value already exists: {accuity_value}")
+                print(f"Skipping Accuity push because value already exists")
+                return True      # Value exists
+
+            else:
+                print("Value is empty, calling Accuity API")
+                return False     # Empty value → call API
+
+    # If combined_key not found in any record
+    return False
+
+        
+
+
+   
+
+    
 
 
 
+import requests
+import json
+import time
+import logging
 
+def get_accuity_response_multiple_call(FLOW_URL, eventUid, orgUnit_uid, program_uid, accuity_search_text):
 
+    print("Send to Accuity")
+    logging.info("Send to Accuity")
 
+    headers = {
+        "Content-Type": "application/json"
+    }
 
+    payload = {
+        "eventUid": eventUid,
+        "action": "complete",
+        "orgUnit": orgUnit_uid,
+        "program": program_uid,
+        "PresidentName": accuity_search_text
+    }
 
+    MAX_RETRIES = 3
+    RETRY_DELAY = 5   # seconds
+
+    for attempt in range(1, MAX_RETRIES + 1):
+
+        try:
+            print(f"🔁 Attempt {attempt}...")
+            
+            response = requests.post(
+                FLOW_URL,
+                headers=headers,
+                json=payload,
+                timeout=300   # prevent hanging forever
+            )
+
+            response.raise_for_status()
+
+            data = response.json()
+
+            # ======================
+            # SUCCESS RESPONSE
+            # ======================
+            if data.get("status") == "SUCCESS":
+                
+                print("✅ Accuity Response received")
+                logging.info("Accuity Response received")
+
+                temp_accuity_response_raw_text = data.get("rawPageText", "")
+
+                '''
+                if not temp_accuity_response_raw_text:
+                    return "No Records Found"
+                '''
+                lines = temp_accuity_response_raw_text.splitlines()
+
+                start_index = None
+                for i, line in enumerate(lines):
+                    if "Names" in line and "Country/Region" in line and "Class" in line:
+                        start_index = i + 1
+                        break
+
+                if start_index is None:
+                    return "No Records Found"
+
+                finalRecords = []
+
+                for line in lines[start_index:]:
+                    clean = " ".join(line.split())
+                    tokens = clean.split()
+
+                    if len(tokens) < 6:
+                        continue
+
+                    class_value = tokens[-1]
+                    body = tokens[:-1]
+
+                    for name_len in range(1, 4):
+                        for country_len in range(1, 4):
+
+                            if name_len + country_len >= len(body):
+                                continue
+
+                            name = " ".join(body[:name_len])
+                            country = " ".join(body[name_len:name_len + country_len])
+                            position = " ".join(body[name_len + country_len:])
+
+                            if len(position.split()) < 3:
+                                continue
+
+                            finalRecords.append({
+                                "Names": name,
+                                "Country/Region": country,
+                                "Position": position,
+                                "Class": class_value
+                            })
+                            break
+                        else:
+                            continue
+                        break
+                '''
+                if not finalRecords:
+                    print("⚠ No Records Found")
+                    #return "No Records Found"
+
+                return temp_accuity_response_raw_text
+                '''
+                if not finalRecords:
+                    accuity_response_raw_text = "No Records Found"
+                    print( f"2 --   No Records Found" )         
+                else:
+                    accuity_response_raw_text = temp_accuity_response_raw_text
+
+                return accuity_response_raw_text
+            
+            # ======================
+            # ERROR IN RESPONSE
+            # ======================
+            if "error" in data:
+                print(f"❌ Accuity Error: {data['error']}")
+                logging.error(f"Accuity Error: {data['error']}")
+                return ""
+
+            print("⚠ Unknown response format")
+            return ""
+
+        # ======================
+        # HANDLE 502 / 500 ERRORS
+        # ======================
+        except requests.exceptions.HTTPError as e:
+
+            if response.status_code in [500, 502, 503, 504]:
+                print(f"⚠ Server error {response.status_code}, retrying...")
+                logging.warning(f"Server error {response.status_code}")
+
+                if attempt < MAX_RETRIES:
+                    time.sleep(RETRY_DELAY * attempt)  # exponential backoff
+                    continue
+                else:
+                    print("❌ Max retries reached.")
+                    return ""
+
+            else:
+                print(f"HTTP Error: {e}")
+                return ""
+
+        # ======================
+        # NETWORK ERROR
+        # ======================
+        except requests.exceptions.RequestException as e:
+            print(f"🌐 Network error: {e}")
+
+            if attempt < MAX_RETRIES:
+                time.sleep(RETRY_DELAY * attempt)
+                continue
+            else:
+                print("❌ Max retries reached.")
+                return ""
+
+        except Exception as e:
+            print(f"⚠ Unexpected error: {e}")
+            logging.exception("Unexpected error")
+            return ""
+
+    return ""
 
 
 

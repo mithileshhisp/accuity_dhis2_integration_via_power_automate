@@ -16,23 +16,30 @@ DHIS2_GET_PASSWORD = os.getenv("DHIS2_GET_PASSWORD")
 #https://links.hispindia.org/ippf_uin/api/dataStore/accuityResponse
 #T77VMiQPJER  g2e5lEB62la xqVU0gGzpXp gRciStNaUPS Uga6HNayg9p uobrC4O3IB1
 # ddqMj4ZCqDR Esr1RH0YAkB IoX9fRYL284 htfzdE441iT pFflz8ehXdK
-tei_uid = "uobrC4O3IB1"
-namespace_url = f"{DHIS2_GET_API_URL}dataStore/accuityResponse/{tei_uid}"
 
-data = {
-    "test": "hello"
-}
+namespace_tei_list = ['g2e5lEB62la','xqVU0gGzpXp','gRciStNaUPS','Uga6HNayg9p',
+                      'uobrC4O3IB1','ddqMj4ZCqDR','Esr1RH0YAkB','IoX9fRYL284','htfzdE441iT',
+                      'pFflz8ehXdK']
+#tei_uid = "g2e5lEB62la"
 
-session = requests.Session()
-session.auth = (DHIS2_GET_USER, DHIS2_GET_PASSWORD)
+for tei_uid in namespace_tei_list:
 
-print("Final URL:", namespace_url)
+    namespace_url = f"{DHIS2_GET_API_URL}dataStore/accuityResponse/{tei_uid}"
 
-#response = session.post(namespace_url, json=data)
-response = session.delete(namespace_url)
+    data = {
+        "test": "hello"
+    }
 
-print(response.status_code)
-print(response.text)
+    session = requests.Session()
+    session.auth = (DHIS2_GET_USER, DHIS2_GET_PASSWORD)
+
+    print("Final URL:", namespace_url)
+
+    #response = session.post(namespace_url, json=data) ## for create namespace
+    response = session.delete(namespace_url)  ## for delete namespace
+ 
+    print(response.status_code)
+    print(response.text)
 
 
 # https://links.hispindia.org/ippf_uin/api/dataStore/accuityResponse/T77VMiQPJER
