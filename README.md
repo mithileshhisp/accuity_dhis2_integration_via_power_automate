@@ -63,7 +63,26 @@ pip install python-dotenv
 
 -- now add cron inside that
 
-0 2 * * * /home/mithilesh/climet_data_exchange/venv/bin/python /home/mithilesh/climet_data_exchange/run_exchange.py >> /home/mithilesh/climet_data_exchange/cron.log 2>&1
+-- Create virtual environment
+cd /home/mithilesh/accuity_dhis2_integration_via_power_automate
+python3 -m venv venv
+-- Activate it
+source venv/bin/activate
+
+then
+pip install python-dotenv
+pip install --upgrade requests certifi urllib3
+-- for run on putty
+(venv) root@localhost:/home/mithilesh/accuity_dhis2_integration_via_power_automate# python main.py
+cd /home/mithilesh/accuity_dhis2_integration_via_power_automate && /home/mithilesh/accuity_dhis2_integration_via_power_automate/venv/bin/python main.py
+
+
+chmod +x /home/mithilesh/accuity_dhis2_integration_via_power_automate/main.py
+
+chmod 755 /home/mithilesh/accuity_dhis2_integration_via_power_automate/logs
+-- final schedular
+
+55 11 * * * cd /home/mithilesh/accuity_dhis2_integration_via_power_automate && /home/mithilesh/accuity_dhis2_integration_via_power_automate/venv/bin/python main.py >> /home/mithilesh/accuity_dhis2_integration_via_power_automate/cronlogs_accuity_response.log 2>&1
 
 this application run through Power Automate 
 Request come from DHIS2 to Power Automate Cloud Flow  --> Power Automate Desktop Flow --> get response from desktop flow -- send to Cloud Flow --> then send to DHIS2 then --> push/put to DHIS2 datastore -->
