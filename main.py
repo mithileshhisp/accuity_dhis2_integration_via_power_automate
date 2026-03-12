@@ -156,7 +156,28 @@ def main_with_logger():
                     push_dataStore_tei_in_dhis2( session_get, namespace_url, tei_uid,  combined_key_attr, new_object )
 
                 #namespace_url = f"{DHIS2_GET_API_URL}dataStore/accuityResponse/{tei_uid}"
-            
+            else:
+                attr1 = "UkQI1dWzZOv"
+                attr2 = "qsASQ0NRTVA"
+                combined_key_attr = f"{attr1}_{attr2}"
+                print(f"For TEI {tei_uid}, de --  {combined_key_attr}, -- No Data Found in Source")
+                log_info(f"For TEI {tei_uid}, de --  {combined_key_attr}, -- No Data Found in Source")               
+                datastore_accuity_value1 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_attr)
+                
+                if not datastore_accuity_value1:
+                    
+                    accuity_search_response_tei_attribute = "No Data Found in Source"
+                    new_object = {
+                        "date": datetime.now().isoformat() + "Z",
+                        "sl_no":"1",
+                        "id":combined_key_attr,
+                        "tei_uid": tei_uid,
+                        attr1: " ",
+                        attr2: " ",
+                        combined_key_attr: accuity_search_response_tei_attribute
+                    }
+
+                    push_dataStore_tei_in_dhis2( session_get, namespace_url, tei_uid,  combined_key_attr, new_object )    
                 
             #print("Country:", attributes_dict.get("Country of Registration"))
             #print("Region:", attributes_dict.get("Region"))
@@ -209,7 +230,29 @@ def main_with_logger():
                         push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de1, new_object )
                         
                     #namespace_url = f"{DHIS2_GET_API_URL}dataStore/accuityResponse/{tei_uid}"
+                else:
+                    de1 = "daG91uRV8pi"
+                    de2 = "DhSKMFMRH84"
+                    combined_key_de1 = f"{de1}_{de2}"
+                    print(f"For Event {event_uid}, de --  {combined_key_de1}, -- No Data Found in Source")
+                    log_info(f"For Event {event_uid}, de --  {combined_key_de1}, -- No Data Found in Source")
+                    datastore_accuity_value2 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_de1)
+                
+                    if not datastore_accuity_value2:
+                      
+                        accuity_search_response_event_de1 = "No Data Found in Source"
+                        new_object = {
+                            "date": datetime.now().isoformat() + "Z",
+                            "sl_no":"2",
+                            "id":combined_key_de1,
+                            "event_uid": event_uid,
+                            de1: " ",
+                            de2: " ",
+                            combined_key_de1: accuity_search_response_event_de1
+                        }
 
+                        push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de1, new_object )
+                            
                 if event_datavalues_dict.get("uT1NdSet4eo") and event_datavalues_dict.get("LGaOnTyfRJ2"):
                     #print("Vice President Name:", event_datavalues_dict.get("uT1NdSet4eo"))
                     #print("President National ID/Tax ID:", event_datavalues_dict.get("LGaOnTyfRJ2"))
@@ -237,7 +280,28 @@ def main_with_logger():
                         }
 
                         push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de2, new_object )
-                        
+                else:
+                    de3 = "uT1NdSet4eo"
+                    de4 = "LGaOnTyfRJ2"
+                    combined_key_de2 = f"{de3}_{de4}"
+                    print(f"For Event {event_uid}, de --  {combined_key_de2}, -- No Data Found in Source")
+                    log_info(f"For Event {event_uid}, de --  {combined_key_de2}, -- No Data Found in Source")
+                    datastore_accuity_value3 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_de2)
+                
+                    if not datastore_accuity_value3:
+                       
+                        accuity_search_response_event_de2 = "No Data Found in Source"
+                        new_object = {
+                            "date": datetime.now().isoformat() + "Z",
+                            "sl_no":"3",
+                            "id":combined_key_de2,
+                            "event_uid": event_uid,
+                            de3: " ",
+                            de4: " ",
+                            combined_key_de2: accuity_search_response_event_de2
+                        }
+
+                        push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de2, new_object )            
                 if event_datavalues_dict.get("DMJOfwrOwo8") and event_datavalues_dict.get("kezRO5k8bYy"):
                     #print("Vice President Name:", event_datavalues_dict.get("uT1NdSet4eo"))
                     #print("President National ID/Tax ID:", event_datavalues_dict.get("LGaOnTyfRJ2"))
@@ -265,7 +329,28 @@ def main_with_logger():
                         }
 
                         push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de3, new_object )
+                else:
+                    de5 = "DMJOfwrOwo8"
+                    de6 = "kezRO5k8bYy"
+                    combined_key_de3 = f"{de5}_{de6}"
+                    print(f"For Event {event_uid}, de --  {combined_key_de3}, -- No Data Found in Source")
+                    log_info(f"For Event {event_uid}, de --  {combined_key_de3}, -- No Data Found in Source")
+                    datastore_accuity_value4 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_de3)
+                
+                    if not datastore_accuity_value4:
+                       
+                        accuity_search_response_event_de3 = "No Data Found in Source"
+                        new_object = {
+                            "date": datetime.now().isoformat() + "Z",
+                            "sl_no":"4",
+                            "id":combined_key_de3,
+                            "event_uid": event_uid,
+                            de5: " ",
+                            de6: " ",
+                            combined_key_de3: accuity_search_response_event_de3
+                        }
 
+                        push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de3, new_object ) 
                 if event_datavalues_dict.get("fKFIKK33FRc") and event_datavalues_dict.get("ZqxEuYK8vUB"):
                     #print("Vice President Name:", event_datavalues_dict.get("uT1NdSet4eo"))
                     #print("President National ID/Tax ID:", event_datavalues_dict.get("LGaOnTyfRJ2"))
@@ -292,7 +377,28 @@ def main_with_logger():
                         }
 
                         push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de4, new_object )
+                else:
+                    de7 = "fKFIKK33FRc"
+                    de8 = "ZqxEuYK8vUB"
+                    combined_key_de4 = f"{de7}_{de8}"
+                    print(f"For Event {event_uid}, de --  {combined_key_de4}, -- No Data Found in Source")
+                    log_info(f"For Event {event_uid}, de --  {combined_key_de4}, -- No Data Found in Source")
+                    datastore_accuity_value5 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_de4)
+                
+                    if not datastore_accuity_value5:
+                        accuity_search_response_event_de4 = "No Data Found in Source"
                         
+                        new_object = {
+                            "date": datetime.now().isoformat() + "Z",
+                            "sl_no":"5",
+                            "id":combined_key_de4,
+                            "event_uid": event_uid,
+                            de7: " ",
+                            de8: " ",
+                            combined_key_de4: accuity_search_response_event_de4
+                        }
+
+                        push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de4, new_object )            
                 if event_datavalues_dict.get("xCJOBTvagP9") and event_datavalues_dict.get("NHoDQ5DC1jY"):
                     #print("Vice President Name:", event_datavalues_dict.get("uT1NdSet4eo"))
                     #print("President National ID/Tax ID:", event_datavalues_dict.get("LGaOnTyfRJ2"))
@@ -320,7 +426,29 @@ def main_with_logger():
                         }
 
                         push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de5, new_object )
-                            
+                else:
+                    de9 = "xCJOBTvagP9"
+                    de10 = "NHoDQ5DC1jY"
+                    combined_key_de5= f"{de9}_{de10}"
+                    print(f"For Event {event_uid}, de --  {combined_key_de5}, -- No Data Found in Source")
+                    log_info(f"For Event {event_uid}, de --  {combined_key_de5}, -- No Data Found in Source")
+                    datastore_accuity_value6 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_de5)
+                
+                    if not datastore_accuity_value6:
+                        accuity_search_response_event_de5 = "No Data Found in Source"
+                        
+                        new_object = {
+                            "date": datetime.now().isoformat() + "Z",
+                            "sl_no":"6",
+                            "id":combined_key_de5,
+                            "event_uid": event_uid,
+                            de9: " ",
+                            de10: " ",
+                            combined_key_de5: accuity_search_response_event_de5
+                        }
+
+                        push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de5, new_object )
+                
                 if event_datavalues_dict.get("RA5zVHd7pVO") and event_datavalues_dict.get("VWdVRyHFlBh"):
                     #print("Vice President Name:", event_datavalues_dict.get("uT1NdSet4eo"))
                     #print("President National ID/Tax ID:", event_datavalues_dict.get("LGaOnTyfRJ2"))
@@ -348,7 +476,28 @@ def main_with_logger():
                         }
 
                         push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de6, new_object )
+                else:
+                    de11 = "RA5zVHd7pVO"
+                    de12 = "VWdVRyHFlBh"
+                    combined_key_de6= f"{de11}_{de12}"
+                    print(f"For Event {event_uid}, de --  {combined_key_de6}, -- No Data Found in Source")
+                    log_info(f"For Event {event_uid}, de --  {combined_key_de6}, -- No Data Found in Source")
+                    datastore_accuity_value7 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_de6)
+                
+                    if not datastore_accuity_value7:
+                       
+                        accuity_search_response_event_de6  = "No Data Found in Source"
+                        new_object = {
+                            "date": datetime.now().isoformat() + "Z",
+                            "sl_no":"7",
+                            "id":combined_key_de6,
+                            "event_uid": event_uid,
+                            de11: " ",
+                            de12: " ",
+                            combined_key_de6: accuity_search_response_event_de6
+                        }
 
+                        push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de6, new_object )                   
                 if event_datavalues_dict.get("glFVJpRaGWK") and event_datavalues_dict.get("vcR9TS21A05"):
                     #print("Vice President Name:", event_datavalues_dict.get("uT1NdSet4eo"))
                     #print("President National ID/Tax ID:", event_datavalues_dict.get("LGaOnTyfRJ2"))
@@ -375,7 +524,28 @@ def main_with_logger():
                         }
 
                         push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de7, new_object )
-                    
+                else:
+                    de13 = "glFVJpRaGWK"
+                    de14 = "vcR9TS21A05"
+                    combined_key_de7= f"{de13}_{de14}"
+                    print(f"For Event {event_uid}, de --  {combined_key_de7}, -- No Data Found in Source")
+                    log_info(f"For Event {event_uid}, de --  {combined_key_de7}, -- No Data Found in Source")
+                    datastore_accuity_value8 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_de7)
+                
+                    if not datastore_accuity_value8:
+                       
+                        accuity_search_response_event_de7 = "No Data Found in Source"
+                        new_object = {
+                            "date": datetime.now().isoformat() + "Z",
+                            "sl_no":"8",
+                            "id":combined_key_de7,
+                            "event_uid": event_uid,
+                            de13: " ",
+                            de14: " ",
+                            combined_key_de7: accuity_search_response_event_de7
+                        }
+
+                        push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de7, new_object )       
                 if event_datavalues_dict.get("U4OSVfrlPxQ") and event_datavalues_dict.get("A46ZGJLezyc"):
                     #print("Vice President Name:", event_datavalues_dict.get("uT1NdSet4eo"))
                     #print("President National ID/Tax ID:", event_datavalues_dict.get("LGaOnTyfRJ2"))
@@ -402,7 +572,29 @@ def main_with_logger():
                         }
 
                         push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de8, new_object )
+                else:
+                    de15 = "U4OSVfrlPxQ"
+                    de16 = "A46ZGJLezyc"
+                    combined_key_de8= f"{de15}_{de16}"
+                    print(f"For Event {event_uid}, de --  {combined_key_de8}, -- No Data Found in Source")
+                    log_info(f"For Event {event_uid}, de --  {combined_key_de8}, -- No Data Found in Source")
+                    datastore_accuity_value9 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_de8)
+                
+                    if not datastore_accuity_value9:
+                        
+                        accuity_search_response_event_de8 = "No Data Found in Source"
+                       
+                        new_object = {
+                            "date": datetime.now().isoformat() + "Z",
+                            "sl_no":"9",
+                            "id":combined_key_de8,
+                            "event_uid": event_uid,
+                            de15: " ",
+                            de16: " ",
+                            combined_key_de8: accuity_search_response_event_de8
+                        }
 
+                        push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de8, new_object )   
                 if event_datavalues_dict.get("YjmSPK8DMOZ") and event_datavalues_dict.get("nY0g2hnfnUB"):
                     #print("Vice President Name:", event_datavalues_dict.get("uT1NdSet4eo"))
                     #print("President National ID/Tax ID:", event_datavalues_dict.get("LGaOnTyfRJ2"))
@@ -429,7 +621,31 @@ def main_with_logger():
                         }
 
                         push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de9, new_object )
-                                                
+                else:
+                    
+                    de17 = "YjmSPK8DMOZ"
+                    de18 = "nY0g2hnfnUB"
+                    combined_key_de9 = f"{de17}_{de18}"
+                    print(f"For Event {event_uid}, de --  {combined_key_de9}, -- No Data Found in Source")
+                    log_info(f"For Event {event_uid}, de --  {combined_key_de9}, -- No Data Found in Source")
+
+                    datastore_accuity_value10 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_de9)
+
+                    if not datastore_accuity_value10:
+                       
+                        accuity_search_response_event_de9 = "No Data Found in Source"
+                        
+                        new_object = {
+                            "date": datetime.now().isoformat() + "Z",
+                            "sl_no":"10",
+                            "id":combined_key_de9,
+                            "event_uid": event_uid,
+                            de17: " ",
+                            de18: " ",
+                            combined_key_de9: accuity_search_response_event_de9
+                        }
+                        push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de9, new_object )
+                
                 if event_datavalues_dict.get("TfCXfVv6j2O") and event_datavalues_dict.get("WY7Aao5rT82"):
                     #print("Vice President Name:", event_datavalues_dict.get("uT1NdSet4eo"))
                     #print("President National ID/Tax ID:", event_datavalues_dict.get("LGaOnTyfRJ2"))
@@ -456,7 +672,81 @@ def main_with_logger():
                         }
 
                         push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de10, new_object )
+                else:
+                    de19 = "TfCXfVv6j2O"
+                    de20 = "WY7Aao5rT82"
+                    combined_key_de10 = f"{de19}_{de20}"
+                    print(f"For Event {event_uid}, de --  {combined_key_de10}, -- No Data Found in Source")
+                    log_info(f"For Event {event_uid}, de --  {combined_key_de10}, -- No Data Found in Source")
+                    datastore_accuity_value11 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_de10)
+                
+                    if not datastore_accuity_value11:
+                        
+                        accuity_search_response_event_de10 = "No Data Found in Source"
+                        new_object = {
+                            "date": datetime.now().isoformat() + "Z",
+                            "sl_no":"11",
+                            "id":combined_key_de10,
+                            "event_uid": event_uid,
+                            de19: " ",
+                            de20: " ",
+                            combined_key_de10: accuity_search_response_event_de10
+                        }
+
+                        push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de10, new_object )
+                ### for bank details
+                if event_datavalues_dict.get("cvI0Tq2uPjC"):
+                    #print("Vice President Name:", event_datavalues_dict.get("uT1NdSet4eo"))
+                    #print("President National ID/Tax ID:", event_datavalues_dict.get("LGaOnTyfRJ2"))
+                    
+                    de21 = "cvI0Tq2uPjC"
+                    de22 = "no_de"
+                    combined_key_de11 = f"{de21}_{de22}"
+                    #combined_key_de11 = f"{de21}"
+                    datastore_accuity_value12 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_de11)
+                
+                    if not datastore_accuity_value12:
+                        accuity_search_text = event_datavalues_dict.get("cvI0Tq2uPjC")
+                        print(f"accuity_search_text bank:, {accuity_search_text}")
+                        accuity_search_response_event_de11 = ""
+                        accuity_search_response_event_de11 = get_accuity_response(ACCUITY_FLOW_URL, tei_uid, ORGUNIT_UID, PROGRAM_UID, accuity_search_text )    
+
+                        new_object_bank = {
+                            "date": datetime.now().isoformat() + "Z",
+                            "sl_no":"12",
+                            "id":combined_key_de11,
+                            "event_uid": event_uid,
+                            de21: event_datavalues_dict.get("cvI0Tq2uPjC"),
+                            de22 :" ", 
+                            combined_key_de11: accuity_search_response_event_de11
+                        }
+
+                        push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de11, new_object_bank )
+                    else:
+                        de21 = "cvI0Tq2uPjC"
+                        de22 = "no_de"
+                        combined_key_de11 = f"{de21}_{de22}"
+                        print(f"For Event {event_uid}, de --  {combined_key_de11}, -- No Data Found in Source")
+                        log_info(f"For Event {event_uid}, de --  {combined_key_de11}, -- No Data Found in Source")
+                        #combined_key_de11 = f"{de21}"
+                        datastore_accuity_value12 = get_dataStore_value(session_get, namespace_url, tei_uid, combined_key_de11)
+                    
+                        if not datastore_accuity_value12:
                             
+                            accuity_search_response_event_de11 = "No Data Found in Source"
+                            
+                            new_object_bank = {
+                                "date": datetime.now().isoformat() + "Z",
+                                "sl_no":"12",
+                                "id":combined_key_de11,
+                                "event_uid": event_uid,
+                                de21: " ",
+                                de22 :" ", 
+                                combined_key_de11: accuity_search_response_event_de11
+                            }
+
+                            push_dataStore_event_in_dhis2( session_get, namespace_url, tei_uid, event_uid, combined_key_de11, new_object_bank )
+
             print("-" * 50)
             log_info("-" * 50)
 

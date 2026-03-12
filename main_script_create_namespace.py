@@ -19,15 +19,24 @@ DHIS2_GET_PASSWORD = os.getenv("DHIS2_GET_PASSWORD")
 
 namespace_tei_list = ['g2e5lEB62la','xqVU0gGzpXp','gRciStNaUPS','Uga6HNayg9p',
                       'uobrC4O3IB1','ddqMj4ZCqDR','Esr1RH0YAkB','IoX9fRYL284','htfzdE441iT',
-                      'pFflz8ehXdK']
+                      'pFflz8ehXdK','KKW9E5sqqPN']
 #tei_uid = "g2e5lEB62la"
+
+
+namespace_tei_list = ['b3AcWIjwXv4']
 
 for tei_uid in namespace_tei_list:
 
     namespace_url = f"{DHIS2_GET_API_URL}dataStore/accuityResponse/{tei_uid}"
 
     data = {
-        "test": "hello"
+        "id": "UkQI1dWzZOv_qsASQ0NRTVA",
+        "date": "2026-02-19T19:37:44.651724Z",
+        "sl_no": "1",
+        "tei_uid": "KKW9E5sqqPN",
+        "UkQI1dWzZOv": "",
+        "qsASQ0NRTVA": "",
+        "UkQI1dWzZOv_qsASQ0NRTVA": "No Records Found"
     }
 
     session = requests.Session()

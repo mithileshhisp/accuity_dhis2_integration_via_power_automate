@@ -591,11 +591,11 @@ def get_dataStore_value(session_get, namespace_url, tei_uid, combined_key):
 
             if accuity_value and accuity_value.strip() != "":
                 #print(f"Skipping Accuity push because value already exists: {accuity_value}")
-                print(f"Skipping Accuity push because value already exists")
+                print(f"Skipping Accuity push because Accuity already Checked")
                 return True      # Value exists
 
             else:
-                print("Value is empty, calling Accuity API")
+                print("Data Store Value is empty, calling Accuity API")
                 return False     # Empty value → call API
 
     # If combined_key not found in any record
