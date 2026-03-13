@@ -60,6 +60,86 @@ pip install --upgrade requests certifi urllib3
 
 pip install python-dotenv
 
+Build Destop flow and cloud flow for single search Organization as on 13/03/2026
+
+Request Body JSON Schema 
+
+for cloud flow single search Organization as on 13/03/2026
+
+Click Use sample payload to generate schema
+
+and Paste the JSON:
+{
+  "eventUid": "string",
+  "orgUnit": "string",
+  "action": "string",
+  "program": "string",
+  "EntityType": "string",	
+  "OrganizationName": "string"
+}
+new url for -- single search Organization as on 13/03/2026
+
+
+inputs mapped are 
+
+NewInput* -- accuity_usrname
+NewInput* -- accuity_password
+NewInputOrganizationName* -- OrganizationName ( variable Name)
+NewInputEntityType* -- EntityType ( variable Name)
+
+body
+
+{
+  "status": "SUCCESS",
+  "message": "Processed successfully",
+  "eventUid": "@{triggerBody()?['eventUid']}",
+  "program": "@{triggerBody()?['program']}",
+  "orgUnit": "@{triggerBody()?['orgUnit']}",
+  "EntityType": "@{triggerBody()?['EntityType']}",
+  "OrganizationName": "@{triggerBody()?['OrganizationName']}",
+  "rawPageText": "@{outputs('Compose')}"
+}
+
+Response Body JSON Schema insert it 
+{
+  "eventUid": "string",
+  "orgUnit": "string",
+  "action": "string",
+  "program": "string",
+  "EntityType": "string",
+  "OrganizationName": "string",
+  "rawPageText": "string"
+}
+
+Use sample payload to generate schema
+{
+    "type": "object",
+    "properties": {
+        "eventUid": {
+            "type": "string"
+        },
+        "orgUnit": {
+            "type": "string"
+        },
+        "action": {
+            "type": "string"
+        },
+        "program": {
+            "type": "string"
+        },
+        "EntityType": {
+            "type": "string"
+        },
+        "OrganizationName": {
+            "type": "string"
+        },
+        "rawPageText": {
+            "type": "string"
+        }
+    }
+}
+
+
 
 -- now add cron inside that
 

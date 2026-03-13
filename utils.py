@@ -273,6 +273,158 @@ def get_accuity_response(FLOW_URL, eventUid, orgUnit_uid, program_uid, accuity_s
         logging.exception("Unexpected error")
         return ""    
 
+def get_accuity_response_orgunit_search(FLOW_URL_ORG_UNIT_SEARCH, eventUid, orgUnit_uid, program_uid, accuity_search_text ):
+    
+    print(f"Send to Accuity for Orgunit Search")
+    logging.info(f"Send to Accuity for Orgunit Search")
+   
+    try:
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        response = requests.post(
+            FLOW_URL_ORG_UNIT_SEARCH,
+            headers=headers,
+            json={
+                "eventUid": eventUid,
+                "action": "complete",
+                "orgUnit": orgUnit_uid,
+                "program": program_uid,
+                "EntityType":"Organization",
+                "OrganizationName": accuity_search_text
+            }
+        )
+        
+        #print(data["status"])
+        #print(data["eventUid"])
+        #print(data["PresidentName"])
+        #print(data["rawPageText"])
+        
+        # If HTTP error like 500, 502 etc.
+        response.raise_for_status()
+
+        data = json.loads(response.text)
+
+        # ==========================
+        # 1️⃣ HANDLE ERROR RESPONSE
+        # ==========================
+        if "error" in data:
+            error_code = data["error"].get("code")
+            error_message = data["error"].get("message")
+
+            print(f"❌ Accuity Error: {error_code}")
+            logging.error(f"Accuity Error: {error_message}")
+
+            return ""   # return empty so loop continues
+        
+        #print("data -- ", data)
+        # ==========================
+        # 2️⃣ HANDLE SUCCESS RESPONSE
+        # ==========================
+        if data["status"] == "SUCCESS":
+            
+            print("✅ Accuity Response received")
+            logging.info(f"Accuity Response received")
+            
+            temp_accuity_response_raw_text = data["rawPageText"]   
+            
+            #raw_text = data["rawPageText"]
+            lines = temp_accuity_response_raw_text.splitlines()
+            
+            start_index = None
+            for i, line in enumerate(lines):
+                if "Names" in line and "Country/Region" in line and "Class" in line:
+                    start_index = i + 1
+                break
+
+            finalRecords = []
+
+            for line in lines[start_index:]:
+                clean = " ".join(line.split())
+
+                tokens = clean.split()
+
+                if len(tokens) < 6:
+                    continue  # too short to be a valid row
+
+                # STEP 1: Extract Class (last token)
+                class_value = tokens[-1]
+
+                # STEP 2: Remaining tokens
+                body = tokens[:-1]
+
+                # STEP 3: Heuristic split
+                # Name is usually shortest (1–3 tokens)
+                # Country is next (1–3 tokens)
+                # Position is longest (rest)
+
+                for name_len in range(1, 4):
+                    for country_len in range(1, 4):
+                        if name_len + country_len >= len(body):
+                            continue
+
+                        name = " ".join(body[:name_len])
+                        country = " ".join(body[name_len:name_len + country_len])
+                        position = " ".join(body[name_len + country_len:])
+
+                        # Position must be meaningful
+                        if len(position.split()) < 3:
+                            continue
+
+                        finalRecords.append({
+                            "Names": name,
+                            "Country/Region": country,
+                            "Position": position,
+                            "Class": class_value
+                        })
+
+                        break
+                    else:
+                        continue
+                    break
+
+            if not finalRecords:
+                
+                accuity_response_raw_text = "No Records Found"
+                print( f"2 --   No Records Found" )         
+            else:
+                accuity_response_raw_text = temp_accuity_response_raw_text
+
+            return accuity_response_raw_text
+        
+        
+        # ==========================
+        # 3️⃣ UNKNOWN FORMAT
+        # ==========================
+        else:
+            print("⚠ Unknown Accuity response format")
+            logging.warning(f"Unknown response: {data}")
+            return ""
+            
+    # ==========================
+    # 4️⃣ NETWORK ERROR
+    # ==========================
+    except requests.exceptions.RequestException as e:
+        print(f"🌐 Network error: {e}")
+        logging.error(f"Network error: {e}")
+        return ""
+
+    # ==========================
+    # 5️⃣ JSON ERROR
+    # ==========================
+    except json.JSONDecodeError:
+        print("⚠ Invalid JSON response")
+        logging.error("Invalid JSON response")
+        return ""
+
+    # ==========================
+    # 6️⃣ ANY OTHER ERROR
+    # ==========================
+    except Exception as e:
+        print(f"⚠ Unexpected error: {e}")
+        logging.exception("Unexpected error")
+        return 
 
 def get_accuity_response_for_error(FLOW_URL, eventUid, orgUnit_uid, program_uid, accuity_search_text):
 

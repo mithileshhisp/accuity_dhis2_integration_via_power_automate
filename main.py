@@ -27,8 +27,8 @@ load_dotenv()
 from utils import (
     configure_logging,get_tei_details,get_dataStore_value,
     log_info,log_error,get_tei_event_details, get_accuity_response,
-    get_accuity_response_for_error, get_accuity_response_multiple_call,
-    push_dataStore_tei_in_dhis2, push_dataStore_event_in_dhis2
+    get_accuity_response_orgunit_search,get_accuity_response_for_error, 
+    get_accuity_response_multiple_call,push_dataStore_tei_in_dhis2, push_dataStore_event_in_dhis2
 )
 
 #print("OpenSSL version:", ssl.OPENSSL_VERSION)
@@ -55,6 +55,9 @@ dataValueSet_endPoint = f"{DHIS2_POST_API_URL}dataValueSets"
 
 namespace_url = f"{DHIS2_GET_API_URL}dataStore/accuityResponse/"
 ACCUITY_FLOW_URL = os.getenv("ACCUITY_FLOW_URL_NEW")
+ACCUITY_FLOW_URL_ORG_UNIT_SEARCH = os.getenv("ACCUITY_FLOW_URL_ORG_UNIT_SEARCH")
+
+
 #print( f" DHIS2_GET_USER. { DHIS2_GET_USER }, DHIS2_GET_PASSWORD  { DHIS2_GET_PASSWORD} " )
 
 #DHIS2_AUTH_POST = ("hispdev", "Devhisp@1")
@@ -709,7 +712,7 @@ def main_with_logger():
                         accuity_search_text = event_datavalues_dict.get("cvI0Tq2uPjC")
                         print(f"accuity_search_text bank:, {accuity_search_text}")
                         accuity_search_response_event_de11 = ""
-                        accuity_search_response_event_de11 = get_accuity_response(ACCUITY_FLOW_URL, tei_uid, ORGUNIT_UID, PROGRAM_UID, accuity_search_text )    
+                        accuity_search_response_event_de11 = get_accuity_response_orgunit_search(ACCUITY_FLOW_URL_ORG_UNIT_SEARCH, tei_uid, ORGUNIT_UID, PROGRAM_UID, accuity_search_text )    
 
                         new_object_bank = {
                             "date": datetime.now().isoformat() + "Z",
