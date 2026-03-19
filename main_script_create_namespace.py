@@ -23,9 +23,9 @@ namespace_tei_list = ['g2e5lEB62la','xqVU0gGzpXp','gRciStNaUPS','Uga6HNayg9p',
 #tei_uid = "g2e5lEB62la"
 
 
-namespace_tei_list = ['b3AcWIjwXv4']
+namespace_tei_list_1 = ['tiKIKTnNOnn']
 
-for tei_uid in namespace_tei_list:
+for tei_uid in namespace_tei_list_1:
 
     namespace_url = f"{DHIS2_GET_API_URL}dataStore/accuityResponse/{tei_uid}"
 
